@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: dropsilk-frontend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    autoDeploy: true
+    envVars:
+      # Render turns these into Docker build args automatically, and also
+      # exposes them to the running container at runtime.
+      - key: VITE_API_BASE_URL
+        sync: false          # set to your DropSilk_Backend URL, e.g. https://dropsilk-backend.onrender.com
+      - key: VITE_RECAPTCHA_SITE_KEY
+        sync: false          # set to your public reCAPTCHA site key
+      - key: PORT
+        value: 10000
