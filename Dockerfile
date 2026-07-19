@@ -4,8 +4,11 @@
 FROM node:22-alpine AS build
 WORKDIR /app
 
-# Enable pnpm (repo uses pnpm per its README)
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# Enable pnpm via corepack. Do NOT force a version here (e.g. pnpm@latest) —
+# if the repo's package.json pins a specific pnpm version via "packageManager",
+# forcing a different one causes pnpm install to fail outright. Letting
+# corepack read the pin itself is the robust option.
+RUN corepack enable
 
 # Install deps first for better layer caching
 COPY frontend/package.json ./
